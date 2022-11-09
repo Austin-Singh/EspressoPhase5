@@ -40,16 +40,22 @@ public class ModifierChecker extends Visitor {
 		return null;
 	}
 
-	/** CInvocation */
+	/** CInvocation -- (COMPLETE)*/
 	public Object visitCInvocation(CInvocation ci) {
 	    println(ci.line + ": Visiting an explicit constructor invocation (" + (ci.superConstructorCall() ? "super" : "this") + ").");
 
 		// YOUR CODE HERE
+	    if(ci.superConstructorCall() && ci.constructor.getModifiers().isPrivate()) {
+	    	Error.error(ci, "Private constructor cannot be instantiated.");
+	    }
+	    
+	    super.visitCInvocation(ci);
+	    // - END -
 
 		return null;
 	}
 
-	/** ClassDecl */
+	/** ClassDecl -- (COMPLETE)*/
 	public Object visitClassDecl(ClassDecl cd) {
 		println(cd.line + ": Visiting a class declaration for class '" + cd.name() + "'.");
 
@@ -72,11 +78,13 @@ public class ModifierChecker extends Visitor {
 						+ cd.superClass().typeName() + "'.");
 
 		// YOUR CODE HERE
+		super.visitClassDecl(cd);
+		// - END -
 
 		return null;
 	}
 
-	/** FieldDecl */
+	/** FieldDecl -- (YET TO COMPLETE)*/
 	public Object visitFieldDecl(FieldDecl fd) {
 	    println(fd.line + ": Visiting a field declaration for field '" +fd.var().name() + "'.");
 
@@ -89,7 +97,7 @@ public class ModifierChecker extends Visitor {
 		return null;
 	}
 
-	/** FieldRef */
+	/** FieldRef -- (YET TO COMPLETE)*/
 	public Object visitFieldRef(FieldRef fr) {
 	    println(fr.line + ": Visiting a field reference '" + fr.fieldName() + "'.");
 
@@ -98,7 +106,7 @@ public class ModifierChecker extends Visitor {
 		return null;
 	}
 
-	/** MethodDecl */
+	/** MethodDecl -- (YET TO COMPLETE)*/
 	public Object visitMethodDecl(MethodDecl md) {
 	    println(md.line + ": Visiting a method declaration for method '" + md.name() + "'.");
 
@@ -107,7 +115,7 @@ public class ModifierChecker extends Visitor {
 		return null;
 	}
 
-	/** Invocation */
+	/** Invocation -- (YET TO COMPLETE)*/
 	public Object visitInvocation(Invocation in) {
 	    println(in.line + ": Visiting an invocation of method '" + in.methodName() + "'.");
 
@@ -122,29 +130,47 @@ public class ModifierChecker extends Visitor {
 	    return null;
 	}
 
-	/** ConstructorDecl */
+	/** ConstructorDecl -- (COMPLETE)*/
 	public Object visitConstructorDecl(ConstructorDecl cd) {
 	    println(cd.line + ": visiting a constructor declaration for class '" + cd.name() + "'.");
 
 		// YOUR CODE HERE
+	    currentContext = cd;
+	    super.visitConstructorDecl(cd);
+	    currentContext = null;
+	    // - END -
 
 		return null;
 	}
 
-	/** New */
+	/** New -- (COMPLETE)*/
 	public Object visitNew(New ne) {
 	    println(ne.line + ": visiting a new '" + ne.type().myDecl.name() + "'.");
 
 		// YOUR CODE HERE
+	    if(ne.type().myDecl.modifiers.isAbstract()) {
+	    	Error.error(ne, "New cannot instantiate abstract class.");
+	    }
+	    
+	    if(ne.getConstructorDecl().getModifiers().isPrivate()) {
+	    	Error.error(ne, "New cannot instantiate private class.");
+	    }
+	    
+	    super.visitNew(ne);
+	    // - END -
 
 		return null;
 	}
 
-	/** StaticInit */
+	/** StaticInit -- (COMPLETE)*/
 	public Object visitStaticInitDecl(StaticInitDecl si) {
 		println(si.line + ": visiting a static initializer");
 
 		// YOUR CODE HERE
+		currentContext = si;
+	    super.visitStaticInitDecl(si);
+	    currentContext = null;
+	    // - END -
 
 		return null;
 	}
@@ -170,7 +196,7 @@ public class ModifierChecker extends Visitor {
 		return null;
 	}
 
-	/** UnaryPostExpression */
+	/** UnaryPostExpression -- (YET TO COMPLETE)*/
     public Object visitUnaryPostExpr(UnaryPostExpr up) {
 	println(up.line + ": visiting a unary post expression with operator '" + up.op() + "'.");
 	
@@ -178,7 +204,7 @@ public class ModifierChecker extends Visitor {
 	return null;
     }
     
-    /** UnaryPreExpr */
+    /** UnaryPreExpr -- (YET TO COMPLETE)*/
     public Object visitUnaryPreExpr(UnaryPreExpr up) {
 	println(up.line + ": visiting a unary pre expression with operator '" + up.op() + "'.");
 	
