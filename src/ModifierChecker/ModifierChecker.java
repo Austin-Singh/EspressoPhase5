@@ -1,0 +1,188 @@
+package ModifierChecker;
+
+import AST.*;
+import Utilities.*;
+import NameChecker.*;
+import TypeChecker.*;
+import Utilities.Error;
+
+public class ModifierChecker extends Visitor {
+
+	private SymbolTable classTable;
+	private ClassDecl currentClass;
+	private ClassBodyDecl currentContext;
+	private boolean leftHandSide = false;
+
+	public ModifierChecker(SymbolTable classTable, boolean debug) {
+		this.classTable = classTable;
+		this.debug = debug;
+	}
+
+	/** Assignment */
+	public Object visitAssignment(Assignment as) {
+	    println(as.line + ": Visiting an assignment (Operator: " + as.op()+ ")");
+
+		boolean oldLeftHandSide = leftHandSide;
+
+		leftHandSide = true;
+		as.left().visit(this);
+
+		// Added 06/28/2012 - no assigning to the 'length' field of an array type
+		if (as.left() instanceof FieldRef) {
+			FieldRef fr = (FieldRef)as.left();
+			if (fr.target().type.isArrayType() && fr.fieldName().getname().equals("length"))
+				Error.error(fr,"Cannot assign a value to final variable length.");
+		}
+
+		leftHandSide = oldLeftHandSide;
+		as.right().visit(this);
+
+		return null;
+	}
+
+	/** CInvocation */
+	public Object visitCInvocation(CInvocation ci) {
+	    println(ci.line + ": Visiting an explicit constructor invocation (" + (ci.superConstructorCall() ? "super" : "this") + ").");
+
+		// YOUR CODE HERE
+
+		return null;
+	}
+
+	/** ClassDecl */
+	public Object visitClassDecl(ClassDecl cd) {
+		println(cd.line + ": Visiting a class declaration for class '" + cd.name() + "'.");
+
+		currentClass = cd;
+
+		// If this class has not yet been declared public make it so.
+		if (!cd.modifiers.isPublic())
+			cd.modifiers.set(true, false, new Modifier(Modifier.Public));
+
+		// If this is an interface declare it abstract!
+		if (cd.isInterface() && !cd.modifiers.isAbstract())
+			cd.modifiers.set(false, false, new Modifier(Modifier.Abstract));
+
+		// If this class extends another class then make sure it wasn't declared
+		// final.
+		if (cd.superClass() != null)
+			if (cd.superClass().myDecl.modifiers.isFinal())
+				Error.error(cd, "Class '" + cd.name()
+						+ "' cannot inherit from final class '"
+						+ cd.superClass().typeName() + "'.");
+
+		// YOUR CODE HERE
+
+		return null;
+	}
+
+	/** FieldDecl */
+	public Object visitFieldDecl(FieldDecl fd) {
+	    println(fd.line + ": Visiting a field declaration for field '" +fd.var().name() + "'.");
+
+		// If field is not private and hasn't been declared public make it so.
+		if (!fd.modifiers.isPrivate() && !fd.modifiers.isPublic())
+			fd.modifiers.set(false, false, new Modifier(Modifier.Public));
+
+		// YOUR CODE HERE
+
+		return null;
+	}
+
+	/** FieldRef */
+	public Object visitFieldRef(FieldRef fr) {
+	    println(fr.line + ": Visiting a field reference '" + fr.fieldName() + "'.");
+
+		// YOUR CODE HERE
+
+		return null;
+	}
+
+	/** MethodDecl */
+	public Object visitMethodDecl(MethodDecl md) {
+	    println(md.line + ": Visiting a method declaration for method '" + md.name() + "'.");
+
+		// YOUR CODE HERE
+
+		return null;
+	}
+
+	/** Invocation */
+	public Object visitInvocation(Invocation in) {
+	    println(in.line + ": Visiting an invocation of method '" + in.methodName() + "'.");
+
+		// YOUR CODE HERE
+
+		return null;
+	}
+
+
+	public Object visitNameExpr(NameExpr ne) {
+	    println(ne.line + ": Visiting a name expression '" + ne.name() + "'. (Nothing to do!)");
+	    return null;
+	}
+
+	/** ConstructorDecl */
+	public Object visitConstructorDecl(ConstructorDecl cd) {
+	    println(cd.line + ": visiting a constructor declaration for class '" + cd.name() + "'.");
+
+		// YOUR CODE HERE
+
+		return null;
+	}
+
+	/** New */
+	public Object visitNew(New ne) {
+	    println(ne.line + ": visiting a new '" + ne.type().myDecl.name() + "'.");
+
+		// YOUR CODE HERE
+
+		return null;
+	}
+
+	/** StaticInit */
+	public Object visitStaticInitDecl(StaticInitDecl si) {
+		println(si.line + ": visiting a static initializer");
+
+		// YOUR CODE HERE
+
+		return null;
+	}
+
+	/** Super */
+	public Object visitSuper(Super su) {
+		println(su.line + ": visiting a super");
+
+		if (currentContext.isStatic())
+			Error.error(su,
+					"non-static variable super cannot be referenced from a static context");
+
+		return null;
+	}
+
+	/** This */
+	public Object visitThis(This th) {
+		println(th.line + ": visiting a this");
+
+		if (currentContext.isStatic())
+			Error.error(th,	"non-static variable this cannot be referenced from a static context");
+
+		return null;
+	}
+
+	/** UnaryPostExpression */
+    public Object visitUnaryPostExpr(UnaryPostExpr up) {
+	println(up.line + ": visiting a unary post expression with operator '" + up.op() + "'.");
+	
+	// YOUR CODE HERE
+	return null;
+    }
+    
+    /** UnaryPreExpr */
+    public Object visitUnaryPreExpr(UnaryPreExpr up) {
+	println(up.line + ": visiting a unary pre expression with operator '" + up.op() + "'.");
+	
+	// YOUR CODE HERE
+	return null;
+    }
+}
