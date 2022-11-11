@@ -205,23 +205,45 @@ public class ModifierChecker extends Visitor {
 		return null;
 	}
 
-	/** UnaryPostExpression -- (YET TO COMPLETE)*/
+	/** UnaryPostExpression -- (COMPLETE)*/
     public Object visitUnaryPostExpr(UnaryPostExpr up) {
 		println(up.line + ": visiting a unary post expression with operator '" + up.op() + "'.");
 		
 		// YOUR CODE HERE
-
+		if(up.expr() instanceof FieldRef) {
+			if(((FieldRef)up.expr()).myDecl.modifiers.isPrivate()) {
+				Error.error(up, "Cannot assign to private field.");
+			}
+		}
+		
+		if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
+			if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
+				Error.error(up, "Cannot assign to final field.");
+			}
+		}
 		// - END -
 
 		return null;
 	}
 		
-	/** UnaryPreExpr -- (YET TO COMPLETE)*/
+	/** UnaryPreExpr -- (COMPLETE)*/
 	public Object visitUnaryPreExpr(UnaryPreExpr up) {
 		println(up.line + ": visiting a unary pre expression with operator '" + up.op() + "'.");
 		
 		// YOUR CODE HERE
-
+		if(up.op().getKind() == PreOp.PLUSPLUS || up.op().getKind() == PreOp.MINUSMINUS) {
+			if(up.expr() instanceof FieldRef) {
+				if(((FieldRef)up.expr()).myDecl.modifiers.isPrivate()) {
+					Error.error(up, "Cannot assign to private field.");
+				}
+			}
+			
+			if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
+				if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
+					Error.error(up, "Cannot assign to final field.");
+				}
+			}
+		}
 		// - END -
 		
 		return null;
