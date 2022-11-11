@@ -18,23 +18,19 @@ function run_tests {
 
                 diff -u me.txt ref.txt > diff.txt
                 if [ -s diff.txt ]; then
-                        grep -E '^(\+\/|\-\/)' diff.txt > diff2.txt
-                        cat diff2.txt | sed 's/.*: //' > diff3.txt
 
-                        #while read line; do echo $line; done < diff3.txt
-
-                        LINE1=$(head -1 diff3.txt)
-                        LINE2=$(tail -1 diff3.txt)
+                        LINE1=$(tail -1 me.txt | sed 's/.*: //')
+                        LINE2=$(tail -1 ref.txt | sed 's/.*: //')
 
                         if [ "$LINE1" = "$LINE2" ]; then
                                 ((goodResults=goodResults+1))
-                                printf "%-15s %-110s %-15s\n\n" "Processing ..." $f "${GREEN}MATCHING${NORMAL} [$total]"
+                                printf "%-15s %-110s %-15s\n\n" "Processing ..." $f "${GREEN}ERROR MESSAGE MATCHING${NORMAL} [$total]"
                         else
-                                printf "%-15s %-110s %-15s\n" "Processing ..." $f "${RED}NOT MATCHING${NORMAL} [$total]"
                                 ((badResults=badResults+1))
-                                printf "\t%s $LINE1\n"
-                                printf "\t%s $LINE2\n\n"
-                        fi 
+                                printf "%-15s %-110s %-15s\n" "Processing ..." $f "${RED}NOT MATCHING${NORMAL} [$total]"
+                                printf "\t$LINE1\n"
+                                printf "\t$LINE2\n\n"                        
+                        fi
 
                 else 
                         ((goodResults=goodResults+1))
