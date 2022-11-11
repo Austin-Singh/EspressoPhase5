@@ -4,7 +4,32 @@ RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 NORMAL=$(tput sgr0)
 
-function run_tests {
+function run_Goodtests {
+
+        goodResults=0
+        badResults=0
+        total=0
+
+        for f in $1
+        do
+                ((total=total+1))
+                ./espressoc $f > me.txt 2> /dev/null
+                ./espressocr $f > ref.txt 2> /dev/null
+
+                diff -u me.txt ref.txt > diff.txt
+                if [ -s diff.txt ]; then
+                        ((badResults=badResults+1))
+                        printf "%-15s %-110s %-15s\n\n" "Processing ..." $f "${RED}OUTPUT NOT MATCHING${NORMAL} [$total]"    
+                else 
+                        ((goodResults=goodResults+1))
+                        printf "%-15s %-110s %-15s\n\n" "Processing ..." $f "${GREEN}OUTPUT MATCHING${NORMAL} [$total]"
+                fi
+        done
+
+        printf "Passed Tests: ${GREEN}$goodResults${NORMAL} of $total passed (${RED}$badResults${NORMAL} failed)\n\n"
+}
+
+function run_Badtests {
 
         goodResults=0
         badResults=0
@@ -25,11 +50,13 @@ function run_tests {
                         if [ "$LINE1" = "$LINE2" ]; then
                                 ((goodResults=goodResults+1))
                                 printf "%-15s %-110s %-15s\n\n" "Processing ..." $f "${GREEN}ERROR MESSAGE MATCHING${NORMAL} [$total]"
+                                printf "\tOUR: $LINE1\n"
+                                printf "\tREF: $LINE2\n\n"     
                         else
                                 ((badResults=badResults+1))
-                                printf "%-15s %-110s %-15s\n" "Processing ..." $f "${RED}NOT MATCHING${NORMAL} [$total]"
-                                printf "\t$LINE1\n"
-                                printf "\t$LINE2\n\n"                        
+                                printf "%-15s %-110s %-15s\n" "Processing ..." $f "${RED}ERROR MESSAGE NOT MATCHING${NORMAL} [$total]"
+                                printf "\tOUR: $LINE1\n"
+                                printf "\tREF: $LINE2\n\n"     
                         fi
 
                 else 
@@ -41,6 +68,5 @@ function run_tests {
         printf "Passed Tests: ${GREEN}$goodResults${NORMAL} of $total passed (${RED}$badResults${NORMAL} failed)\n\n"
 }
 
-run_tests "/home/wsl/EspressoPhase4/Tests/Phase4/Espresso/GoodTests/*"
-run_tests "/home/wsl/EspressoPhase4/Tests/Phase4/Espresso/BadTests/*"
-
+run_Goodtests "/home/wsl/EspressoPhase5/Tests/Phase5/Espresso/GoodTests/*"
+run_Badtests "/home/wsl/EspressoPhase5/Tests/Phase5/Espresso/BadTests/*"
