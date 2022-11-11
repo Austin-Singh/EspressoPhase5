@@ -18,6 +18,34 @@ public class ModifierChecker extends Visitor {
 		this.debug = debug;
 	}
 
+
+	/** Super */
+	public Object visitSuper(Super su) {
+		println(su.line + ": visiting a super");
+
+		if (currentContext.isStatic())
+			Error.error(su,
+					"non-static variable super cannot be referenced from a static context");
+
+		return null;
+	}
+
+	/** This */
+	public Object visitThis(This th) {
+		println(th.line + ": visiting a this");
+
+		if (currentContext.isStatic())
+			Error.error(th,	"non-static variable this cannot be referenced from a static context");
+
+		return null;
+	}
+
+	/** NameExpr */
+	public Object visitNameExpr(NameExpr ne) {
+	    println(ne.line + ": Visiting a name expression '" + ne.name() + "'. (Nothing to do!)");
+	    return null;
+	}
+
 	/** Assignment */
 	public Object visitAssignment(Assignment as) {
 	    println(as.line + ": Visiting an assignment (Operator: " + as.op()+ ")");
@@ -84,52 +112,6 @@ public class ModifierChecker extends Visitor {
 		return null;
 	}
 
-	/** FieldDecl -- (YET TO COMPLETE)*/
-	public Object visitFieldDecl(FieldDecl fd) {
-	    println(fd.line + ": Visiting a field declaration for field '" +fd.var().name() + "'.");
-
-		// If field is not private and hasn't been declared public make it so.
-		if (!fd.modifiers.isPrivate() && !fd.modifiers.isPublic())
-			fd.modifiers.set(false, false, new Modifier(Modifier.Public));
-
-		// YOUR CODE HERE
-
-		return null;
-	}
-
-	/** FieldRef -- (YET TO COMPLETE)*/
-	public Object visitFieldRef(FieldRef fr) {
-	    println(fr.line + ": Visiting a field reference '" + fr.fieldName() + "'.");
-
-		// YOUR CODE HERE
-
-		return null;
-	}
-
-	/** MethodDecl -- (YET TO COMPLETE)*/
-	public Object visitMethodDecl(MethodDecl md) {
-	    println(md.line + ": Visiting a method declaration for method '" + md.name() + "'.");
-
-		// YOUR CODE HERE
-
-		return null;
-	}
-
-	/** Invocation -- (YET TO COMPLETE)*/
-	public Object visitInvocation(Invocation in) {
-	    println(in.line + ": Visiting an invocation of method '" + in.methodName() + "'.");
-
-		// YOUR CODE HERE
-
-		return null;
-	}
-
-
-	public Object visitNameExpr(NameExpr ne) {
-	    println(ne.line + ": Visiting a name expression '" + ne.name() + "'. (Nothing to do!)");
-	    return null;
-	}
-
 	/** ConstructorDecl -- (COMPLETE)*/
 	public Object visitConstructorDecl(ConstructorDecl cd) {
 	    println(cd.line + ": visiting a constructor declaration for class '" + cd.name() + "'.");
@@ -175,40 +157,73 @@ public class ModifierChecker extends Visitor {
 		return null;
 	}
 
-	/** Super */
-	public Object visitSuper(Super su) {
-		println(su.line + ": visiting a super");
+	/** FieldDecl -- (YET TO COMPLETE)*/
+	public Object visitFieldDecl(FieldDecl fd) {
+	    println(fd.line + ": Visiting a field declaration for field '" +fd.var().name() + "'.");
 
-		if (currentContext.isStatic())
-			Error.error(su,
-					"non-static variable super cannot be referenced from a static context");
+		// If field is not private and hasn't been declared public make it so.
+		if (!fd.modifiers.isPrivate() && !fd.modifiers.isPublic())
+			fd.modifiers.set(false, false, new Modifier(Modifier.Public));
+
+		// YOUR CODE HERE
+
+		// - END -
 
 		return null;
 	}
 
-	/** This */
-	public Object visitThis(This th) {
-		println(th.line + ": visiting a this");
+	/** FieldRef -- (YET TO COMPLETE)*/
+	public Object visitFieldRef(FieldRef fr) {
+	    println(fr.line + ": Visiting a field reference '" + fr.fieldName() + "'.");
 
-		if (currentContext.isStatic())
-			Error.error(th,	"non-static variable this cannot be referenced from a static context");
+		// YOUR CODE HERE
+
+		// - END -
+
+		return null;
+	}
+
+	/** MethodDecl -- (YET TO COMPLETE)*/
+	public Object visitMethodDecl(MethodDecl md) {
+	    println(md.line + ": Visiting a method declaration for method '" + md.name() + "'.");
+
+		// YOUR CODE HERE
+
+		// - END -
+
+		return null;
+	}
+
+	/** Invocation -- (YET TO COMPLETE)*/
+	public Object visitInvocation(Invocation in) {
+	    println(in.line + ": Visiting an invocation of method '" + in.methodName() + "'.");
+
+		// YOUR CODE HERE
+
+		// - END -
 
 		return null;
 	}
 
 	/** UnaryPostExpression -- (YET TO COMPLETE)*/
     public Object visitUnaryPostExpr(UnaryPostExpr up) {
-	println(up.line + ": visiting a unary post expression with operator '" + up.op() + "'.");
-	
-	// YOUR CODE HERE
-	return null;
-    }
-    
-    /** UnaryPreExpr -- (YET TO COMPLETE)*/
-    public Object visitUnaryPreExpr(UnaryPreExpr up) {
-	println(up.line + ": visiting a unary pre expression with operator '" + up.op() + "'.");
-	
-	// YOUR CODE HERE
-	return null;
+		println(up.line + ": visiting a unary post expression with operator '" + up.op() + "'.");
+		
+		// YOUR CODE HERE
+
+		// - END -
+
+		return null;
+	}
+		
+	/** UnaryPreExpr -- (YET TO COMPLETE)*/
+	public Object visitUnaryPreExpr(UnaryPreExpr up) {
+		println(up.line + ": visiting a unary pre expression with operator '" + up.op() + "'.");
+		
+		// YOUR CODE HERE
+
+		// - END -
+		
+		return null;
     }
 }
