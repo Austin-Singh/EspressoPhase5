@@ -157,7 +157,7 @@ public class ModifierChecker extends Visitor {
 		return null;
 	}
 
-	/** FieldDecl -- (YET TO COMPLETE)*/
+	/** FieldDecl -- (COMPLETE)*/
 	public Object visitFieldDecl(FieldDecl fd) {
 	    println(fd.line + ": Visiting a field declaration for field '" +fd.var().name() + "'.");
 
@@ -166,7 +166,13 @@ public class ModifierChecker extends Visitor {
 			fd.modifiers.set(false, false, new Modifier(Modifier.Public));
 
 		// YOUR CODE HERE
-
+		if(fd.modifiers.isFinal() && fd.var().init() == null) {
+			Error.error(fd, "Final field declarations must be initialized.");
+		}
+		
+		currentContext = fd;
+		super.visitFieldDecl(fd);
+		currentContext = null;
 		// - END -
 
 		return null;
@@ -188,7 +194,11 @@ public class ModifierChecker extends Visitor {
 	    println(md.line + ": Visiting a method declaration for method '" + md.name() + "'.");
 
 		// YOUR CODE HERE
-
+	    
+	    
+	    currentContext = md;
+	    super.visitMethodDecl(md);
+	    currentContext = null;
 		// - END -
 
 		return null;
