@@ -1,5 +1,4 @@
 package ModifierChecker;
-
 import AST.*;
 import Utilities.*;
 import NameChecker.*;
@@ -17,7 +16,6 @@ public class ModifierChecker extends Visitor {
 		this.classTable = classTable;
 		this.debug = debug;
 	}
-
 
 	/** Super */
 	public Object visitSuper(Super su) {
@@ -75,9 +73,9 @@ public class ModifierChecker extends Visitor {
 		// YOUR CODE HERE
 	    if(ci.superConstructorCall() && ci.constructor.getModifiers().isPrivate()) {
 	    	Error.error(ci, "Private constructor cannot be instantiated.");
-	    }
-	    
-	    super.visitCInvocation(ci);
+	    }else{ 
+			super.visitCInvocation(ci);
+		}
 	    // - END -
 
 		return null;
@@ -90,20 +88,22 @@ public class ModifierChecker extends Visitor {
 		currentClass = cd;
 
 		// If this class has not yet been declared public make it so.
-		if (!cd.modifiers.isPublic())
+		if (!cd.modifiers.isPublic()){
 			cd.modifiers.set(true, false, new Modifier(Modifier.Public));
+		}
 
 		// If this is an interface declare it abstract!
-		if (cd.isInterface() && !cd.modifiers.isAbstract())
+		if (cd.isInterface() && !cd.modifiers.isAbstract()){
 			cd.modifiers.set(false, false, new Modifier(Modifier.Abstract));
+		}
 
 		// If this class extends another class then make sure it wasn't declared
 		// final.
-		if (cd.superClass() != null)
-			if (cd.superClass().myDecl.modifiers.isFinal())
-				Error.error(cd, "Class '" + cd.name()
-						+ "' cannot inherit from final class '"
-						+ cd.superClass().typeName() + "'.");
+		if (cd.superClass() != null){
+			if (cd.superClass().myDecl.modifiers.isFinal()){
+				Error.error(cd, "Class '" + cd.name() + "' cannot inherit from final class '" + cd.superClass().typeName() + "'.");
+			}
+		}
 
 		// YOUR CODE HERE
 		super.visitClassDecl(cd);
@@ -162,54 +162,18 @@ public class ModifierChecker extends Visitor {
 	    println(fd.line + ": Visiting a field declaration for field '" +fd.var().name() + "'.");
 
 		// If field is not private and hasn't been declared public make it so.
-		if (!fd.modifiers.isPrivate() && !fd.modifiers.isPublic())
+		if (!fd.modifiers.isPrivate() && !fd.modifiers.isPublic()){
 			fd.modifiers.set(false, false, new Modifier(Modifier.Public));
+		}
 
 		// YOUR CODE HERE
 		if(fd.modifiers.isFinal() && fd.var().init() == null) {
 			Error.error(fd, "Final field declarations must be initialized.");
+		}else{
+			currentContext = fd;
+			super.visitFieldDecl(fd);
+			currentContext = null;
 		}
-		
-		currentContext = fd;
-		super.visitFieldDecl(fd);
-		currentContext = null;
-		// - END -
-
-		return null;
-	}
-
-	/** FieldRef -- (YET TO COMPLETE)*/
-	public Object visitFieldRef(FieldRef fr) {
-	    println(fr.line + ": Visiting a field reference '" + fr.fieldName() + "'.");
-
-		// YOUR CODE HERE
-
-		// - END -
-
-		return null;
-	}
-
-	/** MethodDecl -- (YET TO COMPLETE)*/
-	public Object visitMethodDecl(MethodDecl md) {
-	    println(md.line + ": Visiting a method declaration for method '" + md.name() + "'.");
-
-		// YOUR CODE HERE
-	    
-	    
-	    currentContext = md;
-	    super.visitMethodDecl(md);
-	    currentContext = null;
-		// - END -
-
-		return null;
-	}
-
-	/** Invocation -- (YET TO COMPLETE)*/
-	public Object visitInvocation(Invocation in) {
-	    println(in.line + ": Visiting an invocation of method '" + in.methodName() + "'.");
-
-		// YOUR CODE HERE
-
 		// - END -
 
 		return null;
@@ -258,4 +222,121 @@ public class ModifierChecker extends Visitor {
 		
 		return null;
     }
+
+	/** FieldRef -- (YET TO COMPLETE)*/
+	public Object visitFieldRef(FieldRef fr) {
+	    println(fr.line + ": Visiting a field reference '" + fr.fieldName() + "'.");
+
+		// YOUR CODE HERE
+		ClassType classType = (ClassType)fr.targetType;
+		FieldDecl fieldDecl = fr.myDecl;
+
+		if (!(classType.typeName().equals(currentClass.className().getname()))){
+			if(fieldDecl.getModifiers().isPrivate()){
+				Error.error(fr,"field '" + fr.fieldName().getname() + "' was declared 'private' and cannot be accessed outside its class.");
+			}
+		}
+
+		if ((fr.target() instanceof NameExpr)){
+			if((((NameExpr)fr.target()).myDecl instanceof ClassDecl)){
+				if(!(fieldDecl.getModifiers().isStatic())){
+					Error.error(fr, "non-static field '" + fr.fieldName().getname() + "' cannot be referenced in a static context.");
+				}
+			}
+		}
+		
+		if(leftHandSide){
+			if(fieldDecl.getModifiers().isFinal()){
+				Error.error(fr,"Cannot assign a value to final field '" + fr.fieldName().getname() + "'.");
+			}  
+		}
+		// - END -
+
+		return null;
+	}
+
+	/** MethodDecl -- (YET TO COMPLETE)*/
+	public Object visitMethodDecl(MethodDecl md) {
+	    println(md.line + ": Visiting a method declaration for method '" + md.name() + "'.");
+
+		// YOUR CODE HERE
+        currentContext = md;
+
+        if (md.getModifiers().isAbstract() && md.block() != null){
+            Error.error(md, "Abstract method '" + md.getname() + "' cannot have a body.");
+        }
+
+        if (md.block() == null) {
+            if (currentClass.isClass() && !currentClass.getModifiers().isAbstract()){
+                Error.error(md, "Method '" + md.getname() + "' does not have a body, or class should be declared abstract.");
+            }else if (currentClass.isClass() && !md.getModifiers().isAbstract()){
+                Error.error(md, "Method '" + md.getname() + "' does not have a body, or should be declared abstract.");
+            }else if (currentClass.isInterface() && md.getModifiers().isFinal()){
+                Error.error(md, "Method '" + md.getname() + "' cannot be declared final in an interface.");
+            }else if (md.getModifiers().isFinal()){
+                Error.error(md, "Abstract method '" + md.getname() + "' cannot be declared final.");
+            }
+        }
+
+        if (currentClass.superClass() != null) {
+            MethodDecl methodDecl = (MethodDecl) new TypeChecker(classTable, true).findMethod(currentClass.superClass().myDecl.allMethods, md.getname(), md.params(),true);
+            if (methodDecl != null) {
+                if (md.paramSignature().equals(methodDecl.paramSignature())) {
+                    if (methodDecl.getModifiers().isFinal()){
+                        Error.error(md, "Method '" + md.getname() + "' was implemented as final in super class, cannot be reimplemented.");
+                    }else if (methodDecl.getModifiers().isStatic() && !md.getModifiers().isStatic()){
+                        Error.error(md, "Method '" + md.getname() + "' delcared static in superclass, cannot be reimplemented non-static.");
+                    }else if (!methodDecl.getModifiers().isStatic() && md.getModifiers().isStatic()){
+                        Error.error(md, "Method '" + md.getname() + "' declared static in superclass, cannot be reimplemented static.");
+                    }
+                }
+            }
+        }
+
+        super.visitMethodDecl(md);
+        currentContext = null;
+		// - END -
+
+		return null;
+	}
+
+	/** Invocation -- (YET TO COMPLETE)*/
+	public Object visitInvocation(Invocation in) {
+	    println(in.line + ": Visiting an invocation of method '" + in.methodName() + "'.");
+
+		// YOUR CODE HERE
+		String methodName = in.methodName().getname();
+
+		if ((in.target() instanceof NameExpr)) {
+			if((((NameExpr)in.target()).myDecl instanceof ClassDecl)){
+				if(!in.targetMethod.getModifiers().isStatic()){
+					Error.error(in,"non-static method '" + in.methodName().getname() + "' cannot be referenced from a static context.");
+				}
+			}
+		}
+
+		if (in.target() == null && currentContext.isStatic()){
+			if(!in.targetMethod.getModifiers().isStatic()){
+				Error.error(in,"non-static method '" + in.methodName().getname() + "' cannot be referenced from a static context.");
+			}
+		}
+
+		if (in.targetMethod.getModifiers().isPrivate()){
+			if(!currentClass.name().equals(((ClassType)in.targetType).myDecl.name())){
+				Error.error(in,"" + in.methodName().getname() + "(" + Type.parseSignature(in.targetMethod.paramSignature()) + " ) has private access in '" + ((ClassType)in.targetType).myDecl.name() + "'.");
+			}
+		}
+
+		if (in.targetMethod.getModifiers().isPrivate()){
+			if (!in.targetMethod.getMyClass().equals(currentClass)){
+				Error.error(in,"" + in.methodName().getname() + "(" + Type.parseSignature(in.targetMethod.paramSignature()) + " ) has private access in '" + in.targetMethod.getMyClass().className().getname() + "'.");
+			}
+		}
+
+		super.visitInvocation(in);
+		// - END -
+
+		return null;
+	}
+
 }

@@ -49,7 +49,7 @@ function run_Badtests {
 
                         if [ "$LINE1" = "$LINE2" ]; then
                                 ((goodResults=goodResults+1))
-                                printf "%-15s %-110s %-15s\n\n" "Processing ..." $f "${GREEN}ERROR MESSAGE MATCHING${NORMAL} [$total]"
+                                printf "%-15s %-110s %-15s\n" "Processing ..." $f "${GREEN}ERROR MESSAGE MATCHING${NORMAL} [$total]"
                                 printf "\tOUR: $LINE1\n"
                                 printf "\tREF: $LINE2\n\n"     
                         else
