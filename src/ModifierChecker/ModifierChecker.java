@@ -285,9 +285,9 @@ public class ModifierChecker extends Visitor {
                     if (methodDecl.getModifiers().isFinal()){
                         Error.error(md, "Method '" + md.getname() + "' was implemented as final in super class, cannot be reimplemented.");
                     }else if (methodDecl.getModifiers().isStatic() && !md.getModifiers().isStatic()){
-                        Error.error(md, "Method '" + md.getname() + "' delcared static in superclass, cannot be reimplemented non-static.");
+                        Error.error(md, "Method '" + md.getname() + "' declared static in superclass, cannot be reimplemented non-static.");
                     }else if (!methodDecl.getModifiers().isStatic() && md.getModifiers().isStatic()){
-                        Error.error(md, "Method '" + md.getname() + "' declared static in superclass, cannot be reimplemented static.");
+                        Error.error(md, "Method '" + md.getname() + "' declared non-static in superclass, cannot be reimplemented static.");
                     }
                 }
             }
