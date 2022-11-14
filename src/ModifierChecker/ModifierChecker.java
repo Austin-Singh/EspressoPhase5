@@ -135,7 +135,9 @@ public class ModifierChecker extends Visitor {
 	    }
 	    
 	    if(ne.getConstructorDecl().getModifiers().isPrivate()) {
-	    	Error.error(ne, "New cannot instantiate private class.");
+	    	if(!ne.type().myDecl.name().equals(currentClass.name())) {
+	    		Error.error(ne, "New cannot instantiate private class.");
+	    	}
 	    }
 	    
 	    super.visitNew(ne);
@@ -186,13 +188,14 @@ public class ModifierChecker extends Visitor {
 		// YOUR CODE HERE
 		if(up.expr() instanceof FieldRef) {
 			if(((FieldRef)up.expr()).myDecl.modifiers.isPrivate()) {
-				Error.error(up, "Cannot assign to private field.");
+				if(!((ClassType)((FieldRef)up.expr()).targetType).myDecl.name().equals(currentClass.name())) {
+					Error.error(up, "Cannot alter private field.");
+				}
 			}
 		}
-		
-		if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
+		else if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
 			if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
-				Error.error(up, "Cannot assign to final field.");
+				Error.error(up, "Cannot alter final field.");
 			}
 		}
 		// - END -
@@ -208,13 +211,15 @@ public class ModifierChecker extends Visitor {
 		if(up.op().getKind() == PreOp.PLUSPLUS || up.op().getKind() == PreOp.MINUSMINUS) {
 			if(up.expr() instanceof FieldRef) {
 				if(((FieldRef)up.expr()).myDecl.modifiers.isPrivate()) {
-					Error.error(up, "Cannot assign to private field.");
+					if(!((ClassType)((FieldRef)up.expr()).targetType).myDecl.name().equals(currentClass.name())) {
+						Error.error(up, "Cannot alter private field.");
+					}
 				}
 			}
 			
 			if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
 				if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
-					Error.error(up, "Cannot assign to final field.");
+					Error.error(up, "Cannot alter final field.");
 				}
 			}
 		}
