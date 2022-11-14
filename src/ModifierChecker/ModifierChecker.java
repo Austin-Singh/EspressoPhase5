@@ -263,6 +263,10 @@ public class ModifierChecker extends Visitor {
 		if(fr.target() instanceof This) {
 			this.visitThis((This)fr.target());
 		}
+		
+		if(fr.target() instanceof Super) {
+			this.visitSuper((Super)fr.target());
+		}
 		// - END -
 
 		return null;
