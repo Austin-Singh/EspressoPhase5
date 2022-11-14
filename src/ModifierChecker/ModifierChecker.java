@@ -22,8 +22,7 @@ public class ModifierChecker extends Visitor {
 		println(su.line + ": visiting a super");
 
 		if (currentContext.isStatic())
-			Error.error(su,
-					"non-static variable super cannot be referenced from a static context");
+			Error.error(su, "non-static variable super cannot be referenced from a static context");
 
 		return null;
 	}
@@ -189,13 +188,16 @@ public class ModifierChecker extends Visitor {
 		if(up.expr() instanceof FieldRef) {
 			if(((FieldRef)up.expr()).myDecl.modifiers.isPrivate()) {
 				if(!((ClassType)((FieldRef)up.expr()).targetType).myDecl.name().equals(currentClass.name())) {
-					Error.error(up, "Cannot alter private field.");
+					Error.error(up, "Cannot assign a value to private field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
 				}
+			}
+			if(((FieldRef)up.expr()).myDecl.modifiers.isFinal()) {
+				Error.error(up, "Cannot assign a value to final field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
 			}
 		}
 		else if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
 			if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
-				Error.error(up, "Cannot alter final field.");
+				Error.error(up, "Cannot assign a value to final field '" + ((NameExpr)up.expr()).name().getname() + "'.");
 			}
 		}
 		// - END -
@@ -212,14 +214,16 @@ public class ModifierChecker extends Visitor {
 			if(up.expr() instanceof FieldRef) {
 				if(((FieldRef)up.expr()).myDecl.modifiers.isPrivate()) {
 					if(!((ClassType)((FieldRef)up.expr()).targetType).myDecl.name().equals(currentClass.name())) {
-						Error.error(up, "Cannot alter private field.");
+						Error.error(up, "Cannot assign a value to private field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
 					}
 				}
+				if(((FieldRef)up.expr()).myDecl.modifiers.isFinal()) {
+					Error.error(up, "Cannot assign a value to final field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
+				}
 			}
-			
-			if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
+			else if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
 				if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
-					Error.error(up, "Cannot alter final field.");
+					Error.error(up, "Cannot assign a value to final field '" + ((NameExpr)up.expr()).name().getname() + "'.");
 				}
 			}
 		}
@@ -228,7 +232,7 @@ public class ModifierChecker extends Visitor {
 		return null;
     }
 
-	/** FieldRef -- (YET TO COMPLETE)*/
+	/** FieldRef -- (COMPLETE)*/
 	public Object visitFieldRef(FieldRef fr) {
 	    println(fr.line + ": Visiting a field reference '" + fr.fieldName() + "'.");
 
@@ -260,7 +264,7 @@ public class ModifierChecker extends Visitor {
 		return null;
 	}
 
-	/** MethodDecl -- (YET TO COMPLETE)*/
+	/** MethodDecl -- (COMPLETE)*/
 	public Object visitMethodDecl(MethodDecl md) {
 	    println(md.line + ": Visiting a method declaration for method '" + md.name() + "'.");
 
@@ -305,7 +309,7 @@ public class ModifierChecker extends Visitor {
 		return null;
 	}
 
-	/** Invocation -- (YET TO COMPLETE)*/
+	/** Invocation -- (COMPLETE)*/
 	public Object visitInvocation(Invocation in) {
 	    println(in.line + ": Visiting an invocation of method '" + in.methodName() + "'.");
 
