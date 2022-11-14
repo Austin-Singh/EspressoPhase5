@@ -1,8 +1,0 @@
---- me.txt	2022-11-13 15:40:31.316197886 -0800
-+++ ref.txt	2022-11-13 15:40:31.586197864 -0800
-@@ -15,4 +15,4 @@
- +------------- End of findMethod --------------
- 9: Visiting an assignment (Operator: =)
- 9: Visiting a field reference 'a'.
--/home/wsl/EspressoPhase5/Tests/Phase5/Espresso/BadTests/bad_test9.java:9: field 'a' was declared 'private' and cannot be accessed outside its class.
-+/var/www/html/webcs/matt/CSC460/Espresso/upload/bad_test9.java.11-13-15:38:14:9: field 'a' was declared 'private' and cannot be accessed outside its class.
