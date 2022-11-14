@@ -246,7 +246,7 @@ public class ModifierChecker extends Visitor {
 			}
 		}
 
-		if ((fr.target() instanceof NameExpr)){
+		if (fr.target() instanceof NameExpr){
 			if((((NameExpr)fr.target()).myDecl instanceof ClassDecl)){
 				if(!(fieldDecl.getModifiers().isStatic())){
 					Error.error(fr, "non-static field '" + fr.fieldName().getname() + "' cannot be referenced in a static context.");
@@ -258,6 +258,10 @@ public class ModifierChecker extends Visitor {
 			if(fieldDecl.getModifiers().isFinal()){
 				Error.error(fr,"Cannot assign a value to final field '" + fr.fieldName().getname() + "'.");
 			}  
+		}
+		
+		if(fr.target() instanceof This) {
+			this.visitThis((This)fr.target());
 		}
 		// - END -
 
