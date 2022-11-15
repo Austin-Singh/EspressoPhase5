@@ -269,6 +269,21 @@ public class ModifierChecker extends Visitor {
 				Error.error("Cannot assign a value to final field '" + fr.fieldName().getname() + "'.");
 			}  
 		}
+
+		//if(fr.target() instanceof Invocation){
+		//	this.visitThis((This)fr.target());
+		//}S
+
+		if(fr.target() instanceof FieldRef){
+			this.visitFieldRef((FieldRef)fr.target());
+		}else if(fr.target() instanceof NameExpr){
+			this.visitNameExpr((NameExpr)fr.target());
+		}else if(fr.target() instanceof Super){
+			this.visitSuper((Super)fr.target());
+		}else if(fr.target() instanceof This){
+			this.visitThis((This)fr.target());
+		}
+
 		// - END -
 
 		return null;
