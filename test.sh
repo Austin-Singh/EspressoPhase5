@@ -20,7 +20,7 @@ function run_Goodtests {
                 if [ -s diff.txt ]; then
                         ((badResults=badResults+1))
                         printf "%-15s %-110s %-15s\n\n" "Processing ..." $f "${RED}OUTPUT NOT MATCHING${NORMAL} [$total]"
-                        #cat diff.txt # show difference in the outputs
+                        cat diff.txt # show difference in the outputs
                 else 
                         ((goodResults=goodResults+1))
                         printf "%-15s %-110s %-15s\n\n" "Processing ..." $f "${GREEN}OUTPUT MATCHING${NORMAL} [$total]"

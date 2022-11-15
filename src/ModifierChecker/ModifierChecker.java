@@ -22,7 +22,7 @@ public class ModifierChecker extends Visitor {
 		println(su.line + ": visiting a super");
 
 		if (currentContext.isStatic())
-			Error.error(su, "non-static variable super cannot be referenced from a static context");
+			Error.error("non-static variable super cannot be referenced from a static context");
 
 		return null;
 	}
@@ -32,7 +32,7 @@ public class ModifierChecker extends Visitor {
 		println(th.line + ": visiting a this");
 
 		if (currentContext.isStatic())
-			Error.error(th,	"non-static variable this cannot be referenced from a static context");
+			Error.error("non-static variable this cannot be referenced from a static context");
 
 		return null;
 	}
@@ -56,7 +56,7 @@ public class ModifierChecker extends Visitor {
 		if (as.left() instanceof FieldRef) {
 			FieldRef fr = (FieldRef)as.left();
 			if (fr.target().type.isArrayType() && fr.fieldName().getname().equals("length"))
-				Error.error(fr,"Cannot assign a value to final variable length.");
+				Error.error("Cannot assign a value to final variable length.");
 		}
 
 		leftHandSide = oldLeftHandSide;
@@ -71,7 +71,7 @@ public class ModifierChecker extends Visitor {
 
 		// YOUR CODE HERE
 	    if(ci.superConstructorCall() && ci.constructor.getModifiers().isPrivate()) {
-	    	Error.error(ci, "Private constructor cannot be instantiated.");
+	    	Error.error("Private constructor cannot be instantiated.");
 	    }else{ 
 			super.visitCInvocation(ci);
 		}
@@ -100,7 +100,7 @@ public class ModifierChecker extends Visitor {
 		// final.
 		if (cd.superClass() != null){
 			if (cd.superClass().myDecl.modifiers.isFinal()){
-				Error.error(cd, "Class '" + cd.name() + "' cannot inherit from final class '" + cd.superClass().typeName() + "'.");
+				Error.error("Class '" + cd.name() + "' cannot inherit from final class '" + cd.superClass().typeName() + "'.");
 			}
 		}
 
@@ -130,12 +130,12 @@ public class ModifierChecker extends Visitor {
 
 		// YOUR CODE HERE
 	    if(ne.type().myDecl.modifiers.isAbstract()) {
-	    	Error.error(ne, "New cannot instantiate abstract class.");
+	    	Error.error("New cannot instantiate abstract class.");
 	    }
 	    
 	    if(ne.getConstructorDecl().getModifiers().isPrivate()) {
 	    	if(!ne.type().myDecl.name().equals(currentClass.name())) {
-	    		Error.error(ne, "New cannot instantiate private class.");
+	    		Error.error(ne.type().myDecl.name() + "( ) has private access in '" + ne.type().myDecl.name() + "'.");
 	    	}
 	    }
 	    
@@ -169,7 +169,7 @@ public class ModifierChecker extends Visitor {
 
 		// YOUR CODE HERE
 		if(fd.modifiers.isFinal() && fd.var().init() == null) {
-			Error.error(fd, "Final field declarations must be initialized.");
+			Error.error("Final field declarations must be initialized.");
 		}else{
 			currentContext = fd;
 			super.visitFieldDecl(fd);
@@ -186,22 +186,26 @@ public class ModifierChecker extends Visitor {
 		
 		// YOUR CODE HERE
 		if(up.expr() instanceof FieldRef) {
+
 			if(((FieldRef)up.expr()).myDecl.modifiers.isPrivate()) {
 				if(!((ClassType)((FieldRef)up.expr()).targetType).myDecl.name().equals(currentClass.name())) {
-					Error.error(up, "Cannot assign a value to private field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
+					Error.error("Cannot assign a value to private field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
 				}
 			}
-			if(((FieldRef)up.expr()).myDecl.modifiers.isFinal()) {
-				Error.error(up, "Cannot assign a value to final field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
-			}
-		}
-		else if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
-			if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
-				Error.error(up, "Cannot assign a value to final field '" + ((NameExpr)up.expr()).name().getname() + "'.");
-			}
-		}
-		// - END -
 
+			if(((FieldRef)up.expr()).myDecl.modifiers.isFinal()) {
+				Error.error("Cannot assign a value to final field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
+			}
+
+		}else if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
+
+			if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
+				Error.error("Cannot assign a value to final field '" + ((NameExpr)up.expr()).name().getname() + "'.");
+			}
+
+		}
+
+		// - END -
 		return null;
 	}
 		
@@ -214,19 +218,20 @@ public class ModifierChecker extends Visitor {
 			if(up.expr() instanceof FieldRef) {
 				if(((FieldRef)up.expr()).myDecl.modifiers.isPrivate()) {
 					if(!((ClassType)((FieldRef)up.expr()).targetType).myDecl.name().equals(currentClass.name())) {
-						Error.error(up, "Cannot assign a value to private field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
+						Error.error("Cannot assign a value to private field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
 					}
 				}
 				if(((FieldRef)up.expr()).myDecl.modifiers.isFinal()) {
-					Error.error(up, "Cannot assign a value to final field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
+					Error.error("Cannot assign a value to final field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
 				}
 			}
 			else if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
 				if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
-					Error.error(up, "Cannot assign a value to final field '" + ((NameExpr)up.expr()).name().getname() + "'.");
+					Error.error("Cannot assign a value to final field '" + ((NameExpr)up.expr()).name().getname() + "'.");
 				}
 			}
 		}
+
 		// - END -
 		
 		return null;
@@ -242,21 +247,21 @@ public class ModifierChecker extends Visitor {
 
 		if (!(classType.typeName().equals(currentClass.className().getname()))){
 			if(fieldDecl.getModifiers().isPrivate()){
-				Error.error(fr,"field '" + fr.fieldName().getname() + "' was declared 'private' and cannot be accessed outside its class.");
+				Error.error("field '" + fr.fieldName().getname() + "' was declared 'private' and cannot be accessed outside its class.");
 			}
 		}
 
 		if (fr.target() instanceof NameExpr){
 			if((((NameExpr)fr.target()).myDecl instanceof ClassDecl)){
 				if(!(fieldDecl.getModifiers().isStatic())){
-					Error.error(fr, "non-static field '" + fr.fieldName().getname() + "' cannot be referenced in a static context.");
+					Error.error("non-static field '" + fr.fieldName().getname() + "' cannot be referenced in a static context.");
 				}
 			}
 		}
 		
 		if(leftHandSide){
 			if(fieldDecl.getModifiers().isFinal()){
-				Error.error(fr,"Cannot assign a value to final field '" + fr.fieldName().getname() + "'.");
+				Error.error("Cannot assign a value to final field '" + fr.fieldName().getname() + "'.");
 			}  
 		}
 		
@@ -280,18 +285,18 @@ public class ModifierChecker extends Visitor {
         currentContext = md;
 
         if (md.getModifiers().isAbstract() && md.block() != null){
-            Error.error(md, "Abstract method '" + md.getname() + "' cannot have a body.");
+            Error.error("Abstract method '" + md.getname() + "' cannot have a body.");
         }
 
         if (md.block() == null) {
             if (currentClass.isClass() && !currentClass.getModifiers().isAbstract()){
-                Error.error(md, "Method '" + md.getname() + "' does not have a body, or class should be declared abstract.");
+                Error.error("Method '" + md.getname() + "' does not have a body, or class should be declared abstract.");
             }else if (currentClass.isClass() && !md.getModifiers().isAbstract()){
-                Error.error(md, "Method '" + md.getname() + "' does not have a body, or should be declared abstract.");
+                Error.error("Method '" + md.getname() + "' does not have a body, or should be declared abstract.");
             }else if (currentClass.isInterface() && md.getModifiers().isFinal()){
-                Error.error(md, "Method '" + md.getname() + "' cannot be declared final in an interface.");
+                Error.error("Method '" + md.getname() + "' cannot be declared final in an interface.");
             }else if (md.getModifiers().isFinal()){
-                Error.error(md, "Abstract method '" + md.getname() + "' cannot be declared final.");
+                Error.error("Abstract method '" + md.getname() + "' cannot be declared final.");
             }
         }
 
@@ -300,11 +305,11 @@ public class ModifierChecker extends Visitor {
             if (methodDecl != null) {
                 if (md.paramSignature().equals(methodDecl.paramSignature())) {
                     if (methodDecl.getModifiers().isFinal()){
-                        Error.error(md, "Method '" + md.getname() + "' was implemented as final in super class, cannot be reimplemented.");
+                        Error.error("Method '" + md.getname() + "' was implemented as final in super class, cannot be reimplemented.");
                     }else if (methodDecl.getModifiers().isStatic() && !md.getModifiers().isStatic()){
-                        Error.error(md, "Method '" + md.getname() + "' declared static in superclass, cannot be reimplemented non-static.");
+                        Error.error("Method '" + md.getname() + "' declared static in superclass, cannot be reimplemented non-static.");
                     }else if (!methodDecl.getModifiers().isStatic() && md.getModifiers().isStatic()){
-                        Error.error(md, "Method '" + md.getname() + "' declared non-static in superclass, cannot be reimplemented static.");
+                        Error.error("Method '" + md.getname() + "' declared non-static in superclass, cannot be reimplemented static.");
                     }
                 }
             }
@@ -327,26 +332,26 @@ public class ModifierChecker extends Visitor {
 		if ((in.target() instanceof NameExpr)) {
 			if((((NameExpr)in.target()).myDecl instanceof ClassDecl)){
 				if(!in.targetMethod.getModifiers().isStatic()){
-					Error.error(in,"non-static method '" + in.methodName().getname() + "' cannot be referenced from a static context.");
+					Error.error("non-static method '" + in.methodName().getname() + "' cannot be referenced from a static context.");
 				}
 			}
 		}
 
 		if (in.target() == null && currentContext.isStatic()){
 			if(!in.targetMethod.getModifiers().isStatic()){
-				Error.error(in,"non-static method '" + in.methodName().getname() + "' cannot be referenced from a static context.");
+				Error.error("non-static method '" + in.methodName().getname() + "' cannot be referenced from a static context.");
 			}
 		}
 
 		if (in.targetMethod.getModifiers().isPrivate()){
 			if(!currentClass.name().equals(((ClassType)in.targetType).myDecl.name())){
-				Error.error(in,"" + in.methodName().getname() + "(" + Type.parseSignature(in.targetMethod.paramSignature()) + " ) has private access in '" + ((ClassType)in.targetType).myDecl.name() + "'.");
+				Error.error("" + in.methodName().getname() + "(" + Type.parseSignature(in.targetMethod.paramSignature()) + " ) has private access in '" + ((ClassType)in.targetType).myDecl.name() + "'.");
 			}
 		}
 
 		if (in.targetMethod.getModifiers().isPrivate()){
 			if (!in.targetMethod.getMyClass().equals(currentClass)){
-				Error.error(in,"" + in.methodName().getname() + "(" + Type.parseSignature(in.targetMethod.paramSignature()) + " ) has private access in '" + in.targetMethod.getMyClass().className().getname() + "'.");
+				Error.error("" + in.methodName().getname() + "(" + Type.parseSignature(in.targetMethod.paramSignature()) + " ) has private access in '" + in.targetMethod.getMyClass().className().getname() + "'.");
 			}
 		}
 
