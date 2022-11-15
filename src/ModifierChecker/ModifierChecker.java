@@ -196,13 +196,14 @@ public class ModifierChecker extends Visitor {
 			if(((FieldRef)up.expr()).myDecl.modifiers.isFinal()) {
 				Error.error("Cannot assign a value to final field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
 			}
-
-		}else if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
-
-			if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
-				Error.error("Cannot assign a value to final field '" + ((NameExpr)up.expr()).name().getname() + "'.");
+			visitFieldRef(((FieldRef)up.expr()));
+		}else if(up.expr() instanceof NameExpr) {
+			if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
+				if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
+					Error.error("Cannot assign a value to final field '" + ((NameExpr)up.expr()).name().getname() + "'.");
+				}
 			}
-
+			visitNameExpr(((NameExpr)up.expr()));
 		}
 
 		// - END -
@@ -214,7 +215,7 @@ public class ModifierChecker extends Visitor {
 		println(up.line + ": visiting a unary pre expression with operator '" + up.op() + "'.");
 		
 		// YOUR CODE HERE
-		if(up.op().getKind() == PreOp.PLUSPLUS || up.op().getKind() == PreOp.MINUSMINUS) {
+		
 			if(up.expr() instanceof FieldRef) {
 				if(((FieldRef)up.expr()).myDecl.modifiers.isPrivate()) {
 					if(!((ClassType)((FieldRef)up.expr()).targetType).myDecl.name().equals(currentClass.name())) {
@@ -224,13 +225,17 @@ public class ModifierChecker extends Visitor {
 				if(((FieldRef)up.expr()).myDecl.modifiers.isFinal()) {
 					Error.error("Cannot assign a value to final field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
 				}
+				visitFieldRef(((FieldRef)up.expr()));
 			}
-			else if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
-				if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
-					Error.error("Cannot assign a value to final field '" + ((NameExpr)up.expr()).name().getname() + "'.");
+			else if(up.expr() instanceof NameExpr) {
+				if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
+					if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
+						Error.error("Cannot assign a value to final field '" + ((NameExpr)up.expr()).name().getname() + "'.");
+					}
 				}
+				visitNameExpr(((NameExpr)up.expr()));
 			}
-		}
+		
 
 		// - END -
 		
@@ -263,14 +268,6 @@ public class ModifierChecker extends Visitor {
 			if(fieldDecl.getModifiers().isFinal()){
 				Error.error("Cannot assign a value to final field '" + fr.fieldName().getname() + "'.");
 			}  
-		}
-		
-		if(fr.target() instanceof This) {
-			this.visitThis((This)fr.target());
-		}
-		
-		if(fr.target() instanceof Super) {
-			this.visitSuper((Super)fr.target());
 		}
 		// - END -
 
