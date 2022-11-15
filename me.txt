@@ -1,0 +1,329 @@
+** Checking Modifiers **
+26: Visiting a class declaration for class 'Io'.
+27: Visiting a method declaration for method 'print'.
++------------- findMethod (Method) ------------
+| Looking for method: print
+| With parameters:
+|   0. (PrimitiveType: byte)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+28: Visiting a method declaration for method 'print'.
++------------- findMethod (Method) ------------
+| Looking for method: print
+| With parameters:
+|   0. (PrimitiveType: short)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+29: Visiting a method declaration for method 'print'.
++------------- findMethod (Method) ------------
+| Looking for method: print
+| With parameters:
+|   0. (PrimitiveType: char)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+30: Visiting a method declaration for method 'print'.
++------------- findMethod (Method) ------------
+| Looking for method: print
+| With parameters:
+|   0. (PrimitiveType: int)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+31: Visiting a method declaration for method 'print'.
++------------- findMethod (Method) ------------
+| Looking for method: print
+| With parameters:
+|   0. (PrimitiveType: long)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+32: Visiting a method declaration for method 'print'.
++------------- findMethod (Method) ------------
+| Looking for method: print
+| With parameters:
+|   0. (PrimitiveType: float)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+33: Visiting a method declaration for method 'print'.
++------------- findMethod (Method) ------------
+| Looking for method: print
+| With parameters:
+|   0. (PrimitiveType: double)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+34: Visiting a method declaration for method 'print'.
++------------- findMethod (Method) ------------
+| Looking for method: print
+| With parameters:
+|   0. (PrimitiveType: String)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+35: Visiting a method declaration for method 'print'.
++------------- findMethod (Method) ------------
+| Looking for method: print
+| With parameters:
+|   0. (PrimitiveType: boolean)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+36: Visiting a method declaration for method 'println'.
++------------- findMethod (Method) ------------
+| Looking for method: println
+| With parameters:
+|   0. (PrimitiveType: byte)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+37: Visiting a method declaration for method 'println'.
++------------- findMethod (Method) ------------
+| Looking for method: println
+| With parameters:
+|   0. (PrimitiveType: short)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+38: Visiting a method declaration for method 'println'.
++------------- findMethod (Method) ------------
+| Looking for method: println
+| With parameters:
+|   0. (PrimitiveType: char)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+39: Visiting a method declaration for method 'println'.
++------------- findMethod (Method) ------------
+| Looking for method: println
+| With parameters:
+|   0. (PrimitiveType: int)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+40: Visiting a method declaration for method 'println'.
++------------- findMethod (Method) ------------
+| Looking for method: println
+| With parameters:
+|   0. (PrimitiveType: long)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+41: Visiting a method declaration for method 'println'.
++------------- findMethod (Method) ------------
+| Looking for method: println
+| With parameters:
+|   0. (PrimitiveType: float)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+42: Visiting a method declaration for method 'println'.
++------------- findMethod (Method) ------------
+| Looking for method: println
+| With parameters:
+|   0. (PrimitiveType: double)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+43: Visiting a method declaration for method 'println'.
++------------- findMethod (Method) ------------
+| Looking for method: println
+| With parameters:
+|   0. (PrimitiveType: String)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+44: Visiting a method declaration for method 'println'.
++------------- findMethod (Method) ------------
+| Looking for method: println
+| With parameters:
+|   0. (PrimitiveType: boolean)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+46: Visiting a method declaration for method 'readInt'.
++------------- findMethod (Method) ------------
+| Looking for method: readInt
+| With parameters:
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+47: Visiting a method declaration for method 'readLong'.
++------------- findMethod (Method) ------------
+| Looking for method: readLong
+| With parameters:
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+48: Visiting a method declaration for method 'readFloat'.
++------------- findMethod (Method) ------------
+| Looking for method: readFloat
+| With parameters:
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+49: Visiting a method declaration for method 'readDouble'.
++------------- findMethod (Method) ------------
+| Looking for method: readDouble
+| With parameters:
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+50: Visiting a method declaration for method 'readString'.
++------------- findMethod (Method) ------------
+| Looking for method: readString
+| With parameters:
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+0: visiting a constructor declaration for class 'Io'.
+0: Visiting an explicit constructor invocation (super).
+53: Visiting a class declaration for class 'Tree'.
+54: Visiting a field declaration for field 'value'.
+55: Visiting a field declaration for field 'left'.
+55: Visiting a field declaration for field 'right'.
+56: visiting a constructor declaration for class 'Tree'.
+0: Visiting an explicit constructor invocation (super).
+57: visiting a constructor declaration for class 'Tree'.
+0: Visiting an explicit constructor invocation (super).
+58: Visiting an assignment (Operator: =)
+58: Visiting a field reference 'value'.
+58: visiting a this
+58: Visiting a name expression 'value'. (Nothing to do!)
+59: Visiting an assignment (Operator: =)
+59: Visiting a field reference 'left'.
+59: visiting a this
+59: Visiting an assignment (Operator: =)
+59: Visiting a field reference 'right'.
+59: visiting a this
+62: Visiting a method declaration for method 'insert'.
++------------- findMethod (Method) ------------
+| Looking for method: insert
+| With parameters:
+|   0. (PrimitiveType: int)
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+63: Visiting a field reference 'value'.
+63: visiting a this
+63: Visiting a name expression 'value'. (Nothing to do!)
+64: Visiting a field reference 'right'.
+64: visiting a this
+65: Visiting an assignment (Operator: =)
+65: Visiting a field reference 'right'.
+65: visiting a this
+65: visiting a new 'Tree'.
+65: Visiting a name expression 'value'. (Nothing to do!)
+67: Visiting an assignment (Operator: =)
+67: Visiting a field reference 'right'.
+67: visiting a this
+67: Visiting an invocation of method 'insert'.
+67: Visiting a field reference 'right'.
+67: visiting a this
+67: Visiting a name expression 'value'. (Nothing to do!)
+68: Visiting a field reference 'value'.
+68: visiting a this
+68: Visiting a name expression 'value'. (Nothing to do!)
+69: Visiting a field reference 'left'.
+69: visiting a this
+70: Visiting an assignment (Operator: =)
+70: Visiting a field reference 'left'.
+70: visiting a this
+70: visiting a new 'Tree'.
+70: Visiting a name expression 'value'. (Nothing to do!)
+72: Visiting an assignment (Operator: =)
+72: Visiting a field reference 'left'.
+72: visiting a this
+72: Visiting an invocation of method 'insert'.
+72: Visiting a field reference 'left'.
+72: visiting a this
+72: Visiting a name expression 'value'. (Nothing to do!)
+74: visiting a this
+77: Visiting a method declaration for method 'traverse'.
++------------- findMethod (Method) ------------
+| Looking for method: traverse
+| With parameters:
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+78: Visiting a field reference 'left'.
+78: visiting a this
+79: Visiting an invocation of method 'traverse'.
+79: Visiting a field reference 'left'.
+79: visiting a this
+80: Visiting an invocation of method 'println'.
+80: Visiting a name expression 'Io'. (Nothing to do!)
+80: Visiting a field reference 'value'.
+80: visiting a this
+81: Visiting a field reference 'right'.
+81: visiting a this
+82: Visiting an invocation of method 'traverse'.
+82: Visiting a field reference 'right'.
+82: visiting a this
+86: Visiting a class declaration for class 'Main'.
+87: Visiting a method declaration for method 'main'.
++------------- findMethod (Method) ------------
+| Looking for method: main
+| With parameters:
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+91: Visiting an assignment (Operator: =)
+91: Visiting a name expression 'no'. (Nothing to do!)
+91: Visiting an invocation of method 'readInt'.
+91: Visiting a name expression 'Io'. (Nothing to do!)
+93: Visiting a name expression 'i'. (Nothing to do!)
+93: Visiting a name expression 'no'. (Nothing to do!)
+93: visiting a unary post expression with operator '++'.
+94: Visiting an assignment (Operator: =)
+94: Visiting a name expression 'temp'. (Nothing to do!)
+94: Visiting an invocation of method 'readInt'.
+94: Visiting a name expression 'Io'. (Nothing to do!)
+95: Visiting a name expression 't'. (Nothing to do!)
+96: Visiting an assignment (Operator: =)
+96: Visiting a name expression 't'. (Nothing to do!)
+96: visiting a new 'Tree'.
+96: Visiting a name expression 'temp'. (Nothing to do!)
+98: Visiting an assignment (Operator: =)
+98: Visiting a name expression 't'. (Nothing to do!)
+98: Visiting an invocation of method 'insert'.
+98: Visiting a name expression 't'. (Nothing to do!)
+98: Visiting a name expression 'temp'. (Nothing to do!)
+100: Visiting an invocation of method 'traverse'.
+100: Visiting a name expression 't'. (Nothing to do!)
+0: visiting a constructor declaration for class 'Main'.
+0: Visiting an explicit constructor invocation (super).
+0: Visiting a class declaration for class 'Object'.
+0: visiting a constructor declaration for class 'Object'.
+** Checking Modifiers ** DONE!
+Phase 5 successfully terminated
+============= S = U = C = C = E = S = S =================
