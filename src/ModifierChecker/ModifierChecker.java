@@ -226,14 +226,15 @@ public class ModifierChecker extends Visitor {
 					Error.error("Cannot assign a value to final field '" + ((FieldRef)up.expr()).fieldName().getname() + "'.");
 				}
 				visitFieldRef(((FieldRef)up.expr()));
-			}
-			else if(up.expr() instanceof NameExpr) {
+			}else if(up.expr() instanceof NameExpr) {
 				if(((NameExpr)up.expr()).myDecl instanceof FieldDecl) {
 					if(((FieldDecl)((NameExpr)up.expr()).myDecl).modifiers.isFinal()) {
 						Error.error("Cannot assign a value to final field '" + ((NameExpr)up.expr()).name().getname() + "'.");
 					}
 				}
 				visitNameExpr(((NameExpr)up.expr()));
+			}else if(up.expr() instanceof Invocation){
+				visitInvocation((Invocation)up.expr());
 			}
 		
 
