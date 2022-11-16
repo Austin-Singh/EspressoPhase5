@@ -288,6 +288,12 @@ public class ModifierChecker extends Visitor {
 		if(fr.target() instanceof This && !fr.rewritten){
 			this.visitThis((This)fr.target());
 		}
+		
+		if(fr.target() instanceof This && fr.rewritten) {
+			if(currentContext.isStatic()) {
+				Error.error("non-static field '" + fr.fieldName().getname() + "' cannot be referenced from a static context.");
+			}
+		}
 
 		if(fr.target() instanceof NameExpr && !fr.rewritten){
 			this.visitNameExpr((NameExpr)fr.target());
@@ -361,25 +367,19 @@ public class ModifierChecker extends Visitor {
 				}
 			}
 		}
-
+		
 		if (in.target() == null && currentContext.isStatic()){
 			if(!in.targetMethod.getModifiers().isStatic()){
 				Error.error("non-static method '" + in.methodName().getname() + "' cannot be referenced from a static context.");
 			}
 		}
-
-		if (in.targetMethod.getModifiers().isPrivate()){
-			if(!currentClass.name().equals(((ClassType)in.targetType).myDecl.name())){
-				Error.error("" + in.methodName().getname() + "(" + Type.parseSignature(in.targetMethod.paramSignature()) + " ) has private access in '" + ((ClassType)in.targetType).myDecl.name() + "'.");
-			}
-		}
-
+		
 		if (in.targetMethod.getModifiers().isPrivate()){
 			if (!in.targetMethod.getMyClass().equals(currentClass)){
 				Error.error("" + in.methodName().getname() + "(" + Type.parseSignature(in.targetMethod.paramSignature()) + " ) has private access in '" + in.targetMethod.getMyClass().className().getname() + "'.");
 			}
 		}
-
+		
 		super.visitInvocation(in);
 		// - END -
 
