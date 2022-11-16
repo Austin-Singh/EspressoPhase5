@@ -246,6 +246,10 @@ public class ModifierChecker extends Visitor {
 	public Object visitFieldRef(FieldRef fr) {
 	    println(fr.line + ": Visiting a field reference '" + fr.fieldName() + "'.");
 
+		if(fr.rewritten){
+			//println("THIS WAS REWRITTEN");
+		}
+
 		// YOUR CODE HERE
 		ClassType classType = (ClassType)fr.targetType;
 		FieldDecl fieldDecl = fr.myDecl;
@@ -270,19 +274,27 @@ public class ModifierChecker extends Visitor {
 			}  
 		}
 
-		//if(fr.target() instanceof Invocation){
-		//	this.visitThis((This)fr.target());
-		//}S
+		if(fr.target() instanceof Invocation){
+			this.visitInvocation((Invocation)fr.target());
+		}
 
 		if(fr.target() instanceof FieldRef){
 			this.visitFieldRef((FieldRef)fr.target());
-		}else if(fr.target() instanceof NameExpr){
-			this.visitNameExpr((NameExpr)fr.target());
 		}else if(fr.target() instanceof Super){
 			this.visitSuper((Super)fr.target());
-		}else if(fr.target() instanceof This){
+		}
+
+		if(fr.target() instanceof This && !fr.rewritten){
 			this.visitThis((This)fr.target());
 		}
+
+		if(fr.target() instanceof NameExpr && !fr.rewritten){
+			this.visitNameExpr((NameExpr)fr.target());
+		}
+
+		//if(fr.target() instanceof This){
+		//	this.visitThis((This)fr.target());
+		//}
 
 		// - END -
 

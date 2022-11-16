@@ -1,0 +1,8 @@
+--- me.txt	2022-11-15 20:42:19.158101029 -0800
++++ ref.txt	2022-11-15 20:42:19.418101015 -0800
+@@ -17,4 +17,4 @@
+ | No candidates were found.
+ +------------- End of findMethod --------------
+ 7: Visiting an invocation of method 'foo'.
+-/home/wsl/EspressoPhase5/Tests/Phase5/Espresso/BadTests/bad_test12.java: non-static method 'foo' cannot be referenced from a static context.
++/var/www/html/webcs/matt/CSC460/Espresso/upload/bad_test12.java.11-15-20:40:0:7: non-static method 'foo' cannot be referenced from a static context.

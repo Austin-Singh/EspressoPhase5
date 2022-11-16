@@ -1,0 +1,24 @@
+** Checking Modifiers **
+3: Visiting a class declaration for class 'Q'.
+4: Visiting a method declaration for method 'foo'.
++------------- findMethod (Method) ------------
+| Looking for method: foo
+| With parameters:
+| Finding methods with the right number of parameters and types
+| 0 candidate(s) were found:
+| No candidates were found.
++------------- End of findMethod --------------
+0: visiting a constructor declaration for class 'Q'.
+0: Visiting an explicit constructor invocation (super).
+7: Visiting a class declaration for class 'R'.
+8: Visiting a method declaration for method 'foo'.
++------------- findMethod (Method) ------------
+| Looking for method: foo
+| With parameters:
+| Finding methods with the right number of parameters and types
+|   foo( )   kept
+| 1 candidate(s) were found:
+|   foo( )
+| Only one candidate - thats the one we will call then ;-)
++------------- End of findMethod --------------
+/home/wsl/EspressoPhase5/Tests/Phase5/Espresso/BadTests/bad_test13.java: Method 'foo' declared non-static in superclass, cannot be reimplemented static.
